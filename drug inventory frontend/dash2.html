@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSure - Drug Inventory and Supply Chain Tracking System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f6f3;
+            color: #333;
+        }
+
+        /* Navbar */
+        header {
+            background-color: #0d6f48;
+            padding: 15px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-left: 15px;
+           
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: rgb(255, 255, 255);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #000000;
+            border-radius: 5px;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+           
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: #09873cd8;
+            color: rgb(7, 0, 0);
+            text-align: center;
+            padding: 100px 20px;
+            margin-top: 20px;
+            /* background: url('https://via.placeholder.com/') no-repeat center center/cover; Replace with appropriate background image */
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+          font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero button {
+            padding: 15px 30px;
+            background-color: #145e3e;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .hero button:hover {
+            background-color: #0d6f48;
+        }
+
+        /* Dashboard Cards */
+        .dashboard {
+            margin: 60px auto;
+            width: 90%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .dashboard h2 {
+            margin-bottom: 40px;
+            font-size: 2.4rem;
+            color: #2c3e50;
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
+        }
+
+        .card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: #27ae60;
+        }
+
+        .card p {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Profile Section */
+        .profile {
+            margin: 50px auto;
+            width: 90%;
+            max-width: 1000px;
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .profile h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .profile p {
+            font-size: 1.3rem;
+            margin: 10px 0;
+        }
+
+        /* Footer Section */
+        footer {
+            background-color: #145e3e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 1rem;
+        }
+
+        /* Responsive Navbar */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                background-color: #0d6f48;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: block;
+            }
+        }
+
+        /* Responsive Hero Section */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>MediSure</h1>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <nav>
+            <ul id="navbar">
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="inventory.html">Inventory</a></li>
+                <li><a href="supply.html">Supply Chain</a></li>
+                <li><a href="report.html">Reports</a></li>
+                <li><a href="#profile">Profile</a></li>
+                <li><a href="#logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h2>We at MediSure Are Committed to Making You Sure!</h2>
+        <p>Our advanced drug inventory and supply chain tracking system ensures the highest standards of efficiency, safety, and accountability, keeping you confident in every step of the process.</p>
+        <button>Learn More</button>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="dashboard">
+        <h2>Dashboard Overview</h2>
+        <div class="dashboard-cards">
+            <div class="card">
+                <h3>Total Drugs</h3>
+                <p id="total-drugs">Loading...</p>
+            </div>
+            <div class="card">
+                <h3>Active Shipments</h3>
+                <p id="active-shipments">Loading...</p>
+            </div>
+            <div class="card">
+                <h3>Pending Orders</h3>
+                <p id="pending-orders">Loading...</p>
+            </div>
+            <div class="card">
+                <h3>Expired Drugs</h3>
+                <p id="expired-drugs">Loading...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile" class="profile">
+        <h2>Your Profile</h2>
+        <p><strong>Username:</strong> <span id="username">Loading...</span></p>
+        <p><strong>Email:</strong> <span id="email">Loading...</span></p>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 MediSure. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Sample user data (this would be dynamically fetched in a real system)
+        const user = {
+            username: "John Doe",
+            email: "john@example.com",
+            totalDrugs: 120,
+            activeShipments: 5,
+            pendingOrders: 15,
+            expiredDrugs: 2
+        };
+
+        // Populate user data on the dashboard
+        document.getElementById('total-drugs').textContent = user.totalDrugs;
+        document.getElementById('active-shipments').textContent = user.activeShipments;
+        document.getElementById('pending-orders').textContent = user.pendingOrders;
+        document.getElementById('expired-drugs').textContent = user.expiredDrugs;
+        document.getElementById('username').textContent = user.username;
+        document.getElementById('email').textContent = user.email;
+
+        // Mobile Navbar toggle
+        function toggleMenu() {
+            const navbar = document.getElementById('navbar');
+            navbar.classList.toggle('active');
+        }
+    </script>
+    <script>
+        function populateDashboard() {
+            // Retrieve user data from local storage
+            const userData = JSON.parse(localStorage.getItem('userData'));
+
+            if (userData) {
+                // Populate dashboard with user data
+                document.getElementById('username').textContent = userData.username;
+                document.getElementById('total-drugs').textContent = userData.totalDrugs;
+                document.getElementById('active-shipments').textContent = userData.activeShipments;
+                document.getElementById('pending-orders').textContent = userData.pendingOrders;
+                document.getElementById('expired-drugs').textContent = userData.expiredDrugs;
+            } else {
+                // Redirect to login if no user data is found
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Populate dashboard on page load
+        window.onload = populateDashboard;
+    </script>
+</body>
+</html>

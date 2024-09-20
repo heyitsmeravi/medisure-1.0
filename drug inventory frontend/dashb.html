@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MediSure</title>
+    <style>
+        /* Basic styling for dashboard page */
+        .dashboard {
+            margin: 20px;
+        }
+        .dashboard h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .dashboard .card {
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Welcome, <span id="username">Loading...</span></h1>
+        <div class="card">
+            <h3>Total Drugs</h3>
+            <p id="total-drugs">Loading...</p>
+        </div>
+        <div class="card">
+            <h3>Active Shipments</h3>
+            <p id="active-shipments">Loading...</p>
+        </div>
+        <div class="card">
+            <h3>Pending Orders</h3>
+            <p id="pending-orders">Loading...</p>
+        </div>
+        <div class="card">
+            <h3>Expired Drugs</h3>
+            <p id="expired-drugs">Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        function populateDashboard() {
+            // Retrieve user data from local storage
+            const userData = JSON.parse(localStorage.getItem('userData'));
+
+            if (userData) {
+                // Populate dashboard with user data
+                document.getElementById('username').textContent = userData.username;
+                document.getElementById('total-drugs').textContent = userData.totalDrugs;
+                document.getElementById('active-shipments').textContent = userData.activeShipments;
+                document.getElementById('pending-orders').textContent = userData.pendingOrders;
+                document.getElementById('expired-drugs').textContent = userData.expiredDrugs;
+            } else {
+                // Redirect to login if no user data is found
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Populate dashboard on page load
+        window.onload = populateDashboard;
+    </script>
+</body>
+</html>

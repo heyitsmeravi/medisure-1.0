@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Comprehensive Reports - MediSure</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background-color: #0d6f48;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .report_nav {
+            background-color: #145e3e;
+            overflow: hidden;
+        }
+        .report_nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .report_nav ul li {
+            display: inline;
+            padding: 14px 16px;
+        }
+        .report_nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .report_nav ul li a:hover {
+            background-color: #0d6f48;
+            color: white;
+        }
+        .container {
+            width: 90%;
+            margin: 20px auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #145e3e;
+        }
+        /* Toggle Button */
+        .toggle-btn {
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .toggle-btn.active {
+            background-color: #1e8449;
+        }
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .filter-section select, .filter-section input {
+            padding: 10px;
+            font-size: 1rem;
+        }
+        /* Report Table */
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        .report-table th, .report-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .report-table th {
+            background-color: #27ae60;
+            color: white;
+        }
+        /* Charts */
+        .chart-container {
+            margin-bottom: 40px;
+        }
+        /* Footer */
+        footer {
+            background-color: #145e3e;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        header {
+            background-color: #0d6f48;
+            padding: 15px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-left: 15px;
+           
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: rgb(255, 255, 255);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #000000;
+            border-radius: 5px;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+           
+        }
+ /* Responsive Navbar */
+ @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                background-color: #0d6f48;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>MediSure</h1>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <nav>
+            <ul id="navbar">
+                <li><a href="dash2.html">Dashboard</a></li>
+                <li><a href="inventory.html">Inventory</a></li>
+                <li><a href="supply.html">Supply Chain</a></li>
+                <li><a href="report.html">Reports</a></li>
+                <li><a href="#profile">Profile</a></li>
+                <li><a href="#logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    
+    <!-- Navigation -->
+     <div class="report_nav">
+        <ul>
+            <li><a href="#" onclick="showReport('inventory')">Inventory Status</a></li>
+            <li><a href="#" onclick="showReport('supplyChain')">Supply Chain</a></li>
+            <li><a href="#" onclick="showReport('batchHistory')">Batch History</a></li>
+            <li><a href="#" onclick="showReport('supplierPerformance')">Supplier Performance</a></li>
+            <li><a href="#" onclick="showReport('inventoryForecast')">Inventory Forecast</a></li>
+        </ul>
+    </div>
+        
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div>
+                <label for="userType">User Type:</label>
+                <select id="userType" onchange="updateReports()">
+                    <option value="pharmacy">Pharmacy/Hospital</option>
+                    <option value="manufacturer">Manufacturer/Distributor</option>
+                </select>
+            </div>
+            <div>
+                <label for="dateRange">Date Range:</label>
+                <input type="date" id="startDate"> to
+                <input type="date" id="endDate">
+            </div>
+            <div>
+                <button class="toggle-btn" onclick="generateCustomReport()">Generate Report</button>
+            </div>
+        </div>
+
+        <!-- Toggle Button -->
+        <button class="toggle-btn" id="toggleBtn" onclick="toggleView()">Switch to Graph View</button>
+
+        <!-- Reports Section -->
+        <div id="reportsSection">
+            <!-- Inventory Status Report -->
+            <div id="inventoryReport">
+                <h2>Comprehensive Drug Inventory Status Report</h2>
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Drug Name</th>
+                            <th>Batch ID</th>
+                            <th>Quantity</th>
+                            <th>Expiry Date</th>
+                            <th>Condition</th>
+                            <th>Location</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryData">
+                        <!-- Dynamic data will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Supply Chain Report -->
+            <div id="supplyChainReport" style="display:none;">
+                <h2>Supply Chain and Inventory Report</h2>
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Batch ID</th>
+                            <th>Current Location</th>
+                            <th>Status</th>
+                            <th>Condition</th>
+                            <th>Estimated Arrival</th>
+                        </tr>
+                    </thead>
+                    <tbody id="supplyChainData">
+                        <!-- Dynamic data will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Batch Location and Condition History -->
+            <div id="batchHistoryReport" style="display:none;">
+                <h2>Batch Location and Condition History</h2>
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Batch ID</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Condition</th>
+                        </tr>
+                    </thead>
+                    <tbody id="batchHistoryData">
+                        <!-- Dynamic data will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Supplier and Vendor Performance Report -->
+            <div id="supplierPerformanceReport" style="display:none;">
+                <h2>Supplier and Vendor Performance Report</h2>
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Supplier Name</th>
+                            <th>On-Time Delivery</th>
+                            <th>Quality Score</th>
+                            <th>Feedback</th>
+                        </tr>
+                    </thead>
+                    <tbody id="supplierPerformanceData">
+                        <!-- Dynamic data will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Inventory Forecasting and Stock Report -->
+            <div id="inventoryForecastReport" style="display:none;">
+                <h2>Inventory Forecasting and Stock Report</h2>
+                <div class="chart-container">
+                    <canvas id="forecastChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 MediSure. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Toggle View Functionality
+        let isTableView = true;
+        function toggleView() {
+            const toggleBtn = document.getElementById('toggleBtn');
+            const reportsSection = document.getElementById('reportsSection');
+            if (isTableView) {
+                toggleBtn.textContent = 'Switch to Table View';
+                // Hide all tables and show graphs
+                reportsSection.querySelectorAll('table').forEach(table => table.style.display = 'none');
+                reportsSection.querySelectorAll('.chart-container').forEach(chart => chart.style.display = 'block');
+            } else {
+                toggleBtn.textContent = 'Switch to Graph View';
+                // Show all tables and hide graphs
+                reportsSection.querySelectorAll('table').forEach(table => table.style.display = 'table');
+                reportsSection.querySelectorAll('.chart-container').forEach(chart => chart.style.display = 'none');
+            }
+            isTableView = !isTableView;
+        }
+
+        // Show Report Based on Navigation Click
+        function showReport(reportId) {
+            document.querySelectorAll('#reportsSection > div').forEach(div => div.style.display = 'none');
+            document.getElementById(reportId + 'Report').style.display = 'block';
+        }
+
+        // Update Reports Based on User Type
+        function updateReports() {
+            const userType = document.getElementById('userType').value;
+            // Adjust the displayed reports based on user type
+            if (userType === 'pharmacy') {
+                showReport('inventory');
+            } else {
+                showReport('supplyChain');
+            }
+        }
+
+        // Generate Custom Report
+        function generateCustomReport() {
+            // Fetch and display data based on selected filters
+            alert('Custom report generated based on selected criteria.');
+        }
+
+        // Sample Data
+        const inventoryData = [
+            { name: "Paracetamol", batch: "B001", quantity: 500, expiry: "2024-10-01", condition: "Good", location: "Warehouse A" },
+            { name: "Ibuprofen", batch: "B002", quantity: 200, expiry: "2023-08-15", condition: "Near Expiry", location: "Pharmacy B" },
+            { name: "Amoxicillin", batch: "B003", quantity: 150, expiry: "2024-12-20", condition: "Good", location: "Warehouse C" }
+        ];
+
+        const supplyChainData = [
+            { batch: "B001", location: "In Transit", status: "On Schedule", condition: "Good", arrival: "2024-06-15" },
+            { batch: "B004", location: "Warehouse D", status: "Delayed", condition: "Compromised", arrival: "2024-06-20" },
+            { batch: "B005", location: "Distributor E", status: "On Schedule", condition: "Good", arrival: "2024-06-18" }
+        ];
+
+        const batchHistoryData = [
+            { batch: "B001", date: "2024-06-10", location: "Manufacturer", condition: "Good" },
+            { batch: "B001", date: "2024-06-12", location: "Distributor", condition: "Good" },
+            { batch: "B001", date: "2024-06-14", location: "In Transit", condition: "Good" }
+        ];
+
+        const supplierPerformanceData = [
+            { supplier: "Supplier A", onTime: "95%", quality: "4.5/5", feedback: "Reliable and timely deliveries." },
+            { supplier: "Supplier B", onTime: "85%", quality: "4.0/5", feedback: "Occasional delays but good quality." },
+            { supplier: "Supplier C", onTime: "98%", quality: "4.8/5", feedback: "Excellent service and quality." }
+        ];
+
+        // Populate Data Functions
+        function populateInventoryData() {
+            const tbody = document.getElementById('inventoryData');
+            tbody.innerHTML = '';
+            inventoryData.forEach(item => {
+                const row = `<tr>
+                    <td>${item.name}</td>
+                    <td>${item.batch}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.expiry}</td>
+                    <td>${item.condition}</td>
+                    <td>${item.location}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function populateSupplyChainData() {
+            const tbody = document.getElementById('supplyChainData');
+            tbody.innerHTML = '';
+            supplyChainData.forEach(item => {
+                const row = `<tr>
+                    <td>${item.batch}</td>
+                    <td>${item.location}</td>
+                    <td>${item.status}</td>
+                    <td>${item.condition}</td>
+                    <td>${item.arrival}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function populateBatchHistoryData() {
+            const tbody = document.getElementById('batchHistoryData');
+            tbody.innerHTML = '';
+            batchHistoryData.forEach(item => {
+                const row = `<tr>
+                    <td>${item.batch}</td>
+                    <td>${item.date}</td>
+                    <td>${item.location}</td>
+                    <td>${item.condition}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function populateSupplierPerformanceData() {
+            const tbody = document.getElementById('supplierPerformanceData');
+            tbody.innerHTML = '';
+            supplierPerformanceData.forEach(item => {
+                const row = `<tr>
+                    <td>${item.supplier}</td>
+                    <td>${item.onTime}</td>
+                    <td>${item.quality}</td>
+                    <td>${item.feedback}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // Inventory Forecasting Chart
+        function renderForecastChart() {
+            const ctx = document.getElementById('forecastChart').getContext('2d');
+            const forecastData = {
+                labels: ["July", "August", "September", "October", "November", "December"],
+                datasets: [{
+                    label: 'Projected Inventory Levels',
+                    data: [500, 450, 400, 350, 300, 250],
+                    backgroundColor: 'rgba(39, 174, 96, 0.2)',
+                    borderColor: 'rgba(39, 174, 96, 1)',
+                    borderWidth: 1
+                }]
+            };
+            new Chart(ctx, {
+                type: 'line',
+                data: forecastData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initial Data Population
+        window.onload = function() {
+            populateInventoryData();
+            populateSupplyChainData();
+            populateBatchHistoryData();
+            populateSupplierPerformanceData();
+            renderForecastChart();
+        };
+    </script>
+</body>
+</html>

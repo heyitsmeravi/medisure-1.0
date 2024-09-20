@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSure - Inventory Management</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+        }
+
+        header {
+            background-color: #0d6f48;
+            padding: 15px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #145e3e;
+            border-radius: 5px;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        .hero {
+            background-color: #1e8449;
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+            margin-top: 20px;
+            background: url('https://via.placeholder.com/1500x800') no-repeat center center/cover;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero button {
+            padding: 15px 30px;
+            background-color: #145e3e;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .hero button:hover {
+            background-color: #0d6f48;
+        }
+
+        .dashboard {
+            margin: 60px auto;
+            width: 90%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .dashboard h2 {
+            margin-bottom: 40px;
+            font-size: 2.4rem;
+            color: #2c3e50;
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
+        }
+
+        .card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: #27ae60;
+        }
+
+        .card p {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .container {
+            margin: 0 auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .inventory-form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .inventory-form input, .inventory-form button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .inventory-form button {
+            background-color: #145e3e;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .inventory-form button:hover {
+            background-color: #0d6f48;
+        }
+
+        .inventory-table {
+            margin-bottom: 20px;
+        }
+
+        .inventory-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .inventory-table th, .inventory-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .inventory-table th {
+            background-color: #f4f4f4;
+        }
+
+        .inventory-table .expired {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .inventory-table .low-quantity {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .chart-container {
+            width: 100%;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            max-width: 1000px;
+            height: auto;
+        }
+
+        .edit, .delete {
+            cursor: pointer;
+            padding: 5px 10px;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            margin: 2px;
+        }
+
+        .edit {
+            background-color: #007bff;
+        }
+
+        .delete {
+            background-color: #dc3545;
+        }
+
+        .edit:hover {
+            background-color: #0056b3;
+        }
+
+        .delete:hover {
+            background-color: #c82333;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #0d6f48;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: calc(100% - 40px); /* Adjust the width to fit the page */
+            left: 20px; /* Center the footer */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>MediSure</h1>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <nav>
+            <ul id="navbar">
+                <li><a href="dash2.html">Dashboard</a></li>
+                <li><a href="inventory.html">Inventory</a></li>
+                <li><a href="supply.html">Supply Chain</a></li>
+                <li><a href="report.html">Reports</a></li>
+                <li><a href="#profile">Profile</a></li>
+                <li><a href="#logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="dashboard">
+        <h2>Dashboard Overview</h2>
+        <div class="dashboard-cards">
+            <div class="card">
+                <h3>Total Drugs</h3>
+                <p id="total-drugs">Loading...</p>
+            </div>
+            <div class="card">
+                <h3>Active Shipments</h3>
+                <p id="active-shipments">Loading...</p>
+            </div>
+            <div class="card">
+                <h3>Pending Orders</h3>
+                <p id="pending-orders">Loading...</p>
+            </div>
+            <div class="card">
+                <h3>Expired Drugs</h3>
+                <p id="expired-drugs">Loading...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inventory Management Section -->
+    <section id="inventory" class="container">
+        <h1>Drug Inventory Management</h1>
+        
+        <!-- Inventory Form -->
+        <div class="inventory-form">
+            <input type="hidden" id="edit-id">
+            <input type="text" id="drug-name" placeholder="Drug Name">
+            <input type="number" id="quantity" placeholder="Quantity">
+            <input type="date" id="expiry-date">
+            <button id="submit-btn" onclick="addDrug()">Add Drug</button>
+        </div>
+        
+        <!-- Inventory Table -->
+        <div class="inventory-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Expiry Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="inventory-table-body">
+                    <!-- Table rows will be added here dynamically -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="chart-container">
+            <canvas id="inventoryChart"></canvas>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile" class="container">
+        <h1>Profile</h1>
+        <!-- Profile details and functionalities here -->
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 MediSure. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Sample data for the inventory
+        let inventory = [
+            { id: 1, name: 'Aspirin', quantity: 50, expiryDate: '2024-12-31' },
+            { id: 2, name: 'Paracetamol', quantity: 5, expiryDate: '2024-10-15' },
+            { id: 3, name: 'Ibuprofen', quantity: 0, expiryDate: '2024-09-30' },
+        ];
+
+        const lowQuantityThreshold = 10;
+        const nearExpiryThresholdDays = 30;
+
+        // Function to render inventory table
+        function renderInventoryTable() {
+            const tbody = document.getElementById('inventory-table-body');
+            tbody.innerHTML = '';
+
+            inventory.forEach(drug => {
+                const isExpired = new Date(drug.expiryDate) < new Date();
+                const isLowQuantity = drug.quantity <= lowQuantityThreshold;
+                const row = document.createElement('tr');
+                row.className = isExpired ? 'expired' : (isLowQuantity ? 'low-quantity' : '');
+                row.innerHTML = `
+                    <td>${drug.id}</td>
+                    <td>${drug.name}</td>
+                    <td>${drug.quantity}</td>
+                    <td>${drug.expiryDate}</td>
+                    <td>
+                        <button class="edit" onclick="editDrug(${drug.id})">Edit</button>
+                        <button class="delete" onclick="deleteDrug(${drug.id})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            updateChart();
+            updateDashboard();
+        }
+
+        // Function to add a new drug
+        function addDrug() {
+            const name = document.getElementById('drug-name').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const expiryDate = document.getElementById('expiry-date').value;
+
+            const newDrug = {
+                id: inventory.length ? Math.max(...inventory.map(d => d.id)) + 1 : 1,
+                name,
+                quantity,
+                expiryDate,
+            };
+
+            inventory.push(newDrug);
+            renderInventoryTable();
+            resetForm();
+        }
+
+        // Function to edit a drug
+        function editDrug(id) {
+            const drug = inventory.find(d => d.id === id);
+            if (drug) {
+                document.getElementById('edit-id').value = drug.id;
+                document.getElementById('drug-name').value = drug.name;
+                document.getElementById('quantity').value = drug.quantity;
+                document.getElementById('expiry-date').value = drug.expiryDate;
+
+                document.getElementById('submit-btn').textContent = 'Update Drug';
+                document.getElementById('submit-btn').onclick = function() {
+                    updateDrug(id);
+                };
+            }
+        }
+
+        // Function to update a drug
+        function updateDrug(id) {
+            const name = document.getElementById('drug-name').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const expiryDate = document.getElementById('expiry-date').value;
+
+            const drug = inventory.find(d => d.id === id);
+            if (drug) {
+                drug.name = name;
+                drug.quantity = quantity;
+                drug.expiryDate = expiryDate;
+
+                document.getElementById('submit-btn').textContent = 'Add Drug';
+                document.getElementById('submit-btn').onclick = addDrug;
+                document.getElementById('edit-id').value = '';
+
+                renderInventoryTable();
+                resetForm();
+            }
+        }
+
+        // Function to delete a drug
+        function deleteDrug(id) {
+            const index = inventory.findIndex(d => d.id === id);
+            if (index !== -1) {
+                inventory.splice(index, 1);
+                renderInventoryTable();
+            }
+        }
+
+        // Function to update the chart
+        function updateChart() {
+            const ctx = document.getElementById('inventoryChart').getContext('2d');
+            const labels = inventory.map(drug => drug.name);
+            const data = inventory.map(drug => drug.quantity);
+
+            if (window.myChart) {
+                window.myChart.data.labels = labels;
+                window.myChart.data.datasets[0].data = data;
+                window.myChart.update();
+            } else {
+                window.myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Drug Quantities',
+                            data: data,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true
+                            },
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Function to reset the form
+        function resetForm() {
+            document.getElementById('drug-name').value = '';
+            document.getElementById('quantity').value = '';
+            document.getElementById('expiry-date').value = '';
+        }
+
+        // Function to update dashboard statistics
+        function updateDashboard() {
+            const totalDrugs = inventory.length;
+            const expiredDrugs = inventory.filter(drug => new Date(drug.expiryDate) < new Date()).length;
+            const activeShipments = inventory.filter(drug => drug.quantity > 0).length;
+            const pendingOrders = totalDrugs - activeShipments;
+
+            document.getElementById('total-drugs').textContent = totalDrugs;
+            document.getElementById('expired-drugs').textContent = expiredDrugs;
+            document.getElementById('active-shipments').textContent = activeShipments;
+            document.getElementById('pending-orders').textContent = pendingOrders;
+        }
+
+        // Initial render
+        renderInventoryTable();
+    </script>
+</body>
+</html>

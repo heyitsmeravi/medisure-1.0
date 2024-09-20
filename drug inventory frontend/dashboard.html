@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Drug Inventory System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            background-color: #003366;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar .menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .menu a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 600;
+        }
+
+        .navbar .menu a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hamburger menu */
+        .hamburger {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            height: 100vh;
+            background-color: #002244;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 70px;
+            display: none;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            display: block;
+            font-size: 18px;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 0;
+            padding: 40px;
+            background-color: #f4f4f4;
+            min-height: 100vh;
+        }
+
+        .main-content h1 {
+            font-size: 28px;
+            color: #003366;
+            margin-bottom: 20px;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background-color: white;
+            width: 48%;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            color: #003366;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            width: 100%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 400px !important;
+        }
+
+        /* Media Queries for responsiveness */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .sidebar {
+                display: block;
+                width: 0;
+                transition: width 0.3s;
+                overflow: hidden;
+            }
+
+            .sidebar.open {
+                width: 220px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <div class="logo">Drug Inventory System</div>
+    <div class="menu">
+        <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
+        <a href="#">Dashboard</a>
+        <a href="#">Profile</a>
+        <a href="#">Settings</a>
+        <a href="#">Logout</a>
+    </div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <ul>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Drug Inventory</a></li>
+        <li><a href="#">Supply Chain Tracking</a></li>
+        <li><a href="#">IoT Integration</a></li>
+        <li><a href="#">Notifications</a></li>
+        <li><a href="#">Statistics</a></li>
+        <li><a href="#">Reports</a></li>
+    </ul>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <h1>Welcome to the Drug Inventory Dashboard</h1>
+
+    <!-- Cards for various modules -->
+    <div class="cards">
+        <div class="card">
+            <h3>Drug Inventory</h3>
+            <p>Track, manage, and update your inventory of medicines and supplies.</p>
+        </div>
+        <div class="card">
+            <h3>Supply Chain Tracking</h3>
+            <p>Monitor real-time tracking and logistics of drug supply chains.</p>
+        </div>
+        <div class="card">
+            <h3>IoT Integration</h3>
+            <p>Connect and manage IoT devices for drug storage and transportation monitoring.</p>
+        </div>
+        <div class="card">
+            <h3>Notifications</h3>
+            <p>Receive timely alerts and notifications about inventory and supply chain updates.</p>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="chart-container">
+        <h3>Medicine Stock Overview</h3>
+        <canvas id="inventoryChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <h3>Supply Chain Status</h3>
+        <canvas id="supplyChainChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Toggle Sidebar Function
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('open');
+    }
+
+    // Data for Inventory Chart
+    const inventoryCtx = document.getElementById('inventoryChart').getContext('2d');
+    const inventoryChart = new Chart(inventoryCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Antibiotics', 'Vaccines', 'Painkillers', 'Insulin', 'Others'],
+            datasets: [{
+                data: [30, 20, 25, 15, 10],
+                backgroundColor: ['#007bff', '#28a745', '#dc3545', '#ffc107', '#17a2b8'],
+                borderColor: '#fff',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Data for Supply Chain Chart
+    const supplyChainCtx = document.getElementById('supplyChainChart').getContext('2d');
+    const supplyChainChart = new Chart(supplyChainCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Warehouse 1', 'Warehouse 2', 'Transit', 'Retail'],
+            datasets: [{
+                label: 'Units',
+                data: [500, 300, 150, 100],
+                backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545'],
+                borderColor: '#fff',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

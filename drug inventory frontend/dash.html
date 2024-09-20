@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Drug Inventory and Supply Chain Tracking System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Section */
+        .header {
+            background-color: #003366;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background-color: #002244;
+            padding: 20px;
+            color: white;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #0056b3;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        /* Dashboard Panels */
+        .dashboard-panels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .panel {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 48%;
+            padding: 20px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .panel:hover {
+            transform: translateY(-5px);
+        }
+
+        .panel h2 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .panel p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Panel Specific Icons or Illustrations */
+        .panel i {
+            font-size: 50px;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <h1>Dashboard - Drug Inventory and Supply Chain Tracking System</h1>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <ul>
+            <li><a href="#">Drug Inventory Management</a></li>
+            <li><a href="#">Supply Chain Tracking</a></li>
+            <li><a href="#">IoT Monitoring</a></li>
+            <li><a href="#">Notifications</a></li>
+            <li><a href="#">Data Entry</a></li>
+            <li><a href="#">Analytics & Reports</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="dashboard-panels">
+            <!-- Drug Inventory Management Panel -->
+            <div class="panel">
+                <i class="fas fa-pills"></i>
+                <h2>Drug Inventory Management</h2>
+                <p>Track available stock, update quantities, and manage inventory efficiently.</p>
+            </div>
+
+            <!-- Supply Chain Tracking Panel -->
+            <div class="panel">
+                <i class="fas fa-truck"></i>
+                <h2>Supply Chain Tracking</h2>
+                <p>Monitor the status of drug shipments and ensure timely deliveries across the supply chain.</p>
+            </div>
+
+            <!-- IoT Monitoring Panel -->
+            <div class="panel">
+                <i class="fas fa-rss"></i>
+                <h2>IoT Monitoring</h2>
+                <p>Keep track of IoT-enabled sensors for environmental conditions like temperature and humidity.</p>
+            </div>
+
+            <!-- Notifications Panel -->
+            <div class="panel">
+                <i class="fas fa-bell"></i>
+                <h2>Notifications</h2>
+                <p>Receive timely alerts and notifications regarding supply chain disruptions or inventory status.</p>
+            </div>
+
+            <!-- Data Entry Panel -->
+            <div class="panel">
+                <i class="fas fa-keyboard"></i>
+                <h2>Data Entry</h2>
+                <p>Quickly add or update drug information, supplier details, and related data.</p>
+            </div>
+
+            <!-- Analytics & Reports Panel -->
+            <div class="panel">
+                <i class="fas fa-chart-line"></i>
+                <h2>Analytics & Reports</h2>
+                <p>View comprehensive analytics and generate detailed reports on drug usage, supply chain efficiency, and more.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2024 Drug Inventory and Supply Chain Tracking System</p>
+    </div>
+</div>
+
+<!-- Font Awesome for icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+</body>
+</html>

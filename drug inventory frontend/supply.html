@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSure - Supply Chain Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f6f3;
+            color: #333;
+        }
+
+        /* Navbar */
+        header {
+            background-color: #0d6f48;
+            padding: 15px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: rgb(255, 255, 255);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #000000;
+            border-radius: 5px;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            background-color: #09873c;
+            color: #fff;
+            text-align: center;
+            padding: 50px 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .hero button {
+            padding: 10px 20px;
+            background-color: #145e3e;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .hero button:hover {
+            background-color: #0d6f48;
+        }
+
+        /* Dashboard Cards */
+        .dashboard {
+            margin-bottom: 40px;
+        }
+
+        .dashboard h2 {
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #27ae60;
+        }
+
+        .card p {
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Form Section */
+        .form-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: #2c3e50;
+        }
+
+        .form-section form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-section input,
+        .form-section select,
+        .form-section button {
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .form-section button {
+            background-color: #145e3e;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-section button:hover {
+            background-color: #0d6f48;
+        }
+
+        /* Map Section */
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        /* Tracking Section */
+        .tracking-section {
+            margin-bottom: 30px;
+        }
+
+        .tracking-section h2 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: #2c3e50;
+        }
+
+        .tracking-section .card {
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tracking-section .card p {
+            font-size: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                background-color: #0d6f48;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero {
+                padding: 40px 10px;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .form-section {
+                padding: 20px;
+            }
+
+            #map {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>MediSure</h1>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <nav>
+            <ul id="navbar">
+                <li><a href="dash2.html">Home</a></li>
+                <li><a href="inventory.html">Inventory</a></li>
+                <li><a href="supply.html">Supply Chain</a></li>
+                <li><a href="report.html">Reports</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="logout.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Dashboard Section -->
+        <section class="dashboard">
+            <h2>Supply Chain Management</h2>
+            <div class="dashboard-cards">
+                <div class="card">
+                    <h3>Total Drugs</h3>
+                    <p id="total-drugs">Loading...</p>
+                </div>
+                <div class="card">
+                    <h3>Active Shipments</h3>
+                    <p id="active-shipments">Loading...</p>
+                </div>
+                <div class="card">
+                    <h3>Pending Orders</h3>
+                    <p id="pending-orders">Loading...</p>
+                </div>
+                <div class="card">
+                    <h3>Expired Drugs</h3>
+                    <p id="expired-drugs">Loading...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Section -->
+        <section class="form-section">
+            <h2>Update Inventory</h2>
+            <form id="inventory-form">
+                <label for="drug-name">Drug Name:</label>
+                <input type="text" id="drug-name" name="drug-name" required>
+
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" required>
+
+                <label for="expiry-date">Expiry Date:</label>
+                <input type="date" id="expiry-date" name="expiry-date" required>
+
+                <label for="supplier">Supplier:</label>
+                <input type="text" id="supplier" name="supplier" required>
+
+                <button type="submit">Update Inventory</button>
+            </form>
+        </section>
+
+        <!-- Tracking Section -->
+        <section class="tracking-section">
+            <h2>Condition Monitoring & Counterfeiting</h2>
+            <div class="card">
+                <h3>Condition Monitoring</h3>
+                <p id="condition-monitoring">Monitoring data will be displayed here...</p>
+            </div>
+            <div class="card">
+                <h3>Anti-Counterfeiting</h3>
+                <p id="anti-counterfeiting">Counterfeit detection data will be displayed here...</p>
+            </div>
+        </section>
+
+        <!-- Map Section -->
+        <section class="map-section">
+            <h2>Live Location Tracking</h2>
+            <div id="map"></div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section class="form-section">
+            <h2>Advanced Analytics</h2>
+            <form id="analytics-form">
+                <label for="start-date">Start Date:</label>
+                <input type="date" id="start-date" name="start-date" required>
+
+                <label for="end-date">End Date:</label>
+                <input type="date" id="end-date" name="end-date" required>
+
+                <label for="filter">Filter by:</label>
+                <select id="filter" name="filter">
+                    <option value="category">Category</option>
+                    <option value="supplier">Supplier</option>
+                </select>
+
+                <button type="submit">Generate Report</button>
+            </form>
+        </section>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navbar').classList.toggle('active');
+        }
+
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: -34.397, lng: 150.644 },
+                zoom: 8,
+            });
+
+            const marker = new google.maps.Marker({
+                position: { lat: -34.397, lng: 150.644 },
+                map: map,
+                title: "Drug Location",
+            });
+        }
+
+        window.onload = function () {
+            initMap();
+
+            // Mock data
+            document.getElementById('total-drugs').innerText = '3';
+            document.getElementById('active-shipments').innerText = '1';
+            document.getElementById('pending-orders').innerText = '3';
+            document.getElementById('expired-drugs').innerText = '2';
+            document.getElementById('condition-monitoring').innerText = 'Temperature: 22°C, Humidity: 50%';
+            document.getElementById('anti-counterfeiting').innerText = 'Verification code: ABC123';
+        };
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu916DpKAjTmJNIgngS6HL_kDIKU0aU&callback=initMap"  defer></script>
+</body>
+</html>
